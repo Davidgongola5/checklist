@@ -1,8 +1,3 @@
-import logo from './logo.svg';
-import './App.css';
-
-
-
 import React, { useState, useRef } from 'react';
 
 const TodoList = () => {
@@ -11,7 +6,7 @@ const TodoList = () => {
 
   const addTodo = () => {
     const newTodo = todoInputRef.current.value;
-    if (newTodo !== '') {
+    if (newTodo.trim() !== '') {
       setTodos((prevTodos) => [...prevTodos, newTodo]);
       todoInputRef.current.value = '';
     }
@@ -24,26 +19,57 @@ const TodoList = () => {
   };
 
   return (
-    <div style={{ textAlign: 'center', backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
-      <h1>Todo List</h1>
-      <div style={{ marginBottom: '20px' }}>
-        <input style={{ padding: '8px', marginRight: '8px', border: '1px solid #ccc', borderRadius: '4px' }} type="text" ref={todoInputRef} />
-        <button style={{ padding: '8px', backgroundColor: '#4caf50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }} onClick={addTodo}>
-          Add
-        </button>
+    <>
+      <style>
+        {`
+          body {
+            background-color: #c2c2c2;
+            margin: 0;
+          }
+        `}
+      </style>
+      <div style={{ textAlign: 'center', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', minHeight: '100vh' }}>
+        <h1>Todo List</h1>
+        <div style={{ marginBottom: '20px' }}>
+          <input
+            type="text"
+            ref={todoInputRef}
+            placeholder="Enter your task..."
+            style={{ padding: '8px', marginRight: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
+          />
+          <button onClick={addTodo} style={{ padding: '8px', backgroundColor: '#f6ff00', color: 'black', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+            Add
+          </button>
+        </div>
+        <ul style={{ listStyleType: 'none', padding: '0' }}>
+          {todos.map((todo, index) => (
+            <li
+              key={index}
+              style={{
+                margin: '8px 0',
+                padding: '8px',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                backgroundColor : index % 2 === 0 ? '#f6ff00' : '#2226a1',
+                color : index % 2 === 0 ? 'black' : "white",
+              }}
+              onClick={() => removeTodo(index)}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = '#a86632';
+                e.target.style.color = 'black';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = index % 2 === 0 ? '#f6ff00' : '#2226a1';
+                e.target.style.color = index % 2 === 0 ? 'black' : "white";
+              }}
+            >
+              {todo}
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul style={{ listStyleType: 'none', padding: '0' }}>
-        {todos.map((todo, index) => (
-          <li
-            key={index}
-            style={{ margin: '8px 0', padding: '8px', border: '1px solid #ddd', borderRadius: '4px', cursor: 'pointer', backgroundColor: index % 2 === 0 ? '#f2f2f2' : '#e6e6e6' }}
-            onClick={() => removeTodo(index)}
-          >
-            {todo}
-          </li>
-        ))}
-      </ul>
-    </div>
+    </>
   );
 };
 
